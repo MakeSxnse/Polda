@@ -233,21 +233,58 @@ export const SCENES = {
     background: '/scenes/scena3.png',
     hotspots: [
       {
-        id: 'zpet',
-        label: 'Zpět',
-        x: 5, y: 80, w: 10, h: 10,
-        hoverText: 'Jít zpět k paneláku',
+        id: 'nahoru',
+        label: 'nahoru',
+        x: 1,
+        y: -20,
+        w: 30,
+        h: 100,
+        hoverText: 'Jít nahoru',
         onClick: [
           {
+            condition: (s) => s.inventory.includes('oblek'),
+            action: { type: 'CHANGE_SCENE', sceneId: 'scena4' }
+          },
+          {
             condition: (s) => true,
-            action: { type: 'CHANGE_SCENE', sceneId: 'scena2' }
+            action: { type: 'SHOW_TEXT', text: 'Tak nahoře už šli asi spát. Můj tenzometr mi tam ale hlásí vysokou radiaci. Bez obleku ani ránu. Nerad bych, aby mi narostla třetí ruka, i když na psaní protokolů by se hodila.' }
           }
         ],
+      },
+
+      {
+        id: 'dolu',
+        label: 'dolu',
+        x: 75, y: -10, w: 30, h: 100,
+        hoverText: 'Jít dolů',
+        onClick: [
+          {
+            condition: (s) => s.inventory.includes('baterka'),
+            action: { type: 'CHANGE_SCENE', sceneId: 'scena4' }
+          },
+          {
+            condition: (s) => true,
+            action: { type: 'SHOW_TEXT', text: 'Dolů? Do tý černý díry? Leda ve snu. Tam dole končí sranda a začíná... no, tma a smrad. Bez světla tam nelezu, nerad bych šlápl na něco, co mě sežere.' }
+          }
+        ]
+      },
+
+      {
+        id: 'elektricka_skrinka',
+        label: 'Skříňka s elektrikou',
+        x: 65, y: 33, w: 8, h: 20,
+        hoverText: 'Skříňka s elektrikou',
+        onClick: [
+          {
+            condition: (s) => s.inventory.includes('paklic'),
+            action: { type: 'SHOW_TEXT', text: 'No sláva, vrátnej byl profík! V tý hromadě bordelu jsem našel univerzální paklíč! Doufám, že to nebyl jeho jedinej.' }
+          },
+        ]
       }
     ],
   },
 
-  // ← PŘIDÁVEJ DALŠÍ SCÉNY STEJNÝM ZPŮSOBEM
+
 };
 
 
@@ -276,6 +313,12 @@ export const ITEMS = {
     name: 'Tyč',
     image: '/items/tyc.png', // ← nezapomeň nahrát obrázek do /public/items/
     description: 'Stará ocelová tyč.',
+  },
+  oblek: {
+    id: 'oblek',
+    name: 'Oblek',
+    image: '/items/oblek.png', // ← nezapomeň nahrát obrázek do /public/items/
+    description: 'Protiradiační oblek',
   },
 };
 
