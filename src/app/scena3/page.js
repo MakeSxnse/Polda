@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useGame } from '../../context/GameContext';
 import { SCENES } from '../../data/gameData';
 
-export default function Scena1() {
+export default function Scena3() {
   const router = useRouter();
   const { gameState, recordClick, addItem, updateScene } = useGame();
   const [text, setText] = useState('');
@@ -14,11 +14,11 @@ export default function Scena1() {
 
   // Uložíme informaci, že jsme v této scéně
   useEffect(() => {
-    updateScene('scena1');
+    updateScene('scena3');
   }, []);
 
   // Přímý přístup k datům scény
-  const data = SCENES.scena1;
+  const data = SCENES.scena3;
 
   if (!gameState.isReady) return <div>Načítání...</div>;
 
@@ -39,7 +39,7 @@ export default function Scena1() {
       {data.hotspots.map(h => (
         <div
           key={h.id}
-          className="absolute cursor-pointer hover:bg-white/20 transition-colors"
+          className="absolute cursor-pointer hover:bg-white/20"
           style={{ left: h.x + '%', top: h.y + '%', width: h.w + '%', height: h.h + '%' }}
           onMouseEnter={() => setHoverText(h.hoverText || '')}
           onMouseLeave={() => setHoverText('')}
@@ -83,7 +83,7 @@ export default function Scena1() {
       {/* Jednoduché zobrazení textu */}
       {text && (
         <div
-          className="absolute bottom-10 left-0 right-0 p-10 bg-black/70 text-white text-2xl text-center cursor-pointer"
+          className="absolute bottom-10 left-0 right-0 p-10 bg-black/70 text-white text-2xl text-center cursor-pointer bg-black"
           onClick={() => setText('')}
         >
           {text}
