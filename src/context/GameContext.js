@@ -10,27 +10,31 @@ export function GameProvider({ children }) {
     inventory: [],
     flags: {}, // Pro ukládání stavů jako 'dvere_otevreny: true'
     clickCounts: {}, // Sledování počtu kliknutí na hotspoty
-    isReady: false // Flag, abychom věděli, že se data načetla z localStorage
+    isReady: false, // Flag, abychom věděli, že se data načetla z localStorage
+    activePopup: null, // ID aktuálně otevřeného popupu (transient)
+    activeText: null // Aktuálně zobrazený dialog (transient)
   });
 
   // 1. Načtení dat při startu
   useEffect(() => {
     const saved = localStorage.getItem('polda_save');
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        setGameState(prev => ({
-          ...prev,
-          ...parsed,
-          isReady: true
-        }));
-      } catch (e) {
-        console.error("Chyba při načítání savu:", e);
+    setTimeout(() => {
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          setGameState(prev => ({
+            ...prev,
+            ...parsed,
+            isReady: true
+          }));
+        } catch (e) {
+          console.error("Chyba při načítání savu:", e);
+          setGameState(prev => ({ ...prev, isReady: true }));
+        }
+      } else {
         setGameState(prev => ({ ...prev, isReady: true }));
       }
-    } else {
-      setGameState(prev => ({ ...prev, isReady: true }));
-    }
+    }, 0);
   }, []);
 
   // 2. Uložení dat při každé změně
@@ -73,12 +77,30 @@ export function GameProvider({ children }) {
     });
   };
 
+  const openPopup = (popupId) => {
+    setGameState(prev => ({ ...prev, activePopup: popupId }));
+  };
+
+  const closePopup = () => {
+    setGameState(prev => ({ ...prev, activePopup: null }));
+  };
+
+  const showText = (text) => {
+    setGameState(prev => ({ ...prev, activeText: text }));
+  };
+
+  const clearText = () => {
+    setGameState(prev => ({ ...prev, activeText: null }));
+  };
+
   const resetGame = () => {
     const newState = {
       currentScene: 'scena1',
       inventory: [],
       flags: {},
       clickCounts: {},
+      activePopup: null,
+      activeText: null,
       isReady: true
     };
     setGameState(newState);
@@ -86,7 +108,18 @@ export function GameProvider({ children }) {
   };
 
   return (
-    <GameContext.Provider value={{ gameState, updateScene, setFlag, recordClick, addItem, resetGame }}>
+    <GameContext.Provider value={{
+      gameState,
+      updateScene,
+      setFlag,
+      recordClick,
+      addItem,
+      resetGame,
+      openPopup,
+      closePopup,
+      showText,
+      clearText
+    }}>
       {children}
     </GameContext.Provider>
   );

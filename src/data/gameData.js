@@ -156,6 +156,15 @@ export const SCENES = {
         hoverText: 'Rozbité okno',
         onClick: [
           {
+            // MÁ TYČ — použije ji k vyšplhání
+            condition: (s) => s.inventory.includes('tyc'),
+            action: [
+              { type: 'SHOW_TEXT', text: 'Tyč jako žebřík. Starý trik. A moje záda mi to nikdy neodpustí.' },
+              { type: 'CHANGE_SCENE', sceneId: 'scena3' }
+            ]
+          },
+          {
+            // FALLBACK — nemá tyč
             condition: (s) => true,
             action: { type: 'SHOW_TEXT', text: 'To okno je vysoko. Moje klouby už dávno nejsou to, co bejvaly v devadesátkách. Kdybych se pokusil tam vyskočit, skončím na JIPce dřív, než stačím zaklepat na sklo.' },
           },
@@ -224,6 +233,19 @@ export const SCENES = {
             action: { type: 'SHOW_TEXT', text: 'Lampa už je bez té tyče jen kus šrotu.' },
           },
         ],
+      },
+
+      {
+        id: 'dvere',
+        label: 'Zamčené dveře',
+        x: 72, y: 37, w: 18, h: 27,
+        hoverText: 'Zamčené dveře',
+        onClick: [
+          {
+            condition: (s) => true,
+            action: { type: 'SHOW_TEXT', text: 'Zamčeno. Ten zámek vypadá tak bytelně, že by ho neotevřel ani Červenej trpaslík. Tady se někdo hodně bál, aby mu neukradli i ten rezavej vzduch uvnitř.' }
+          }
+        ]
       }
     ],
   },
@@ -259,10 +281,15 @@ export const SCENES = {
         hoverText: 'Jít dolů',
         onClick: [
           {
-            condition: (s) => s.inventory.includes('baterka'),
-            action: { type: 'CHANGE_SCENE', sceneId: 'scena4' }
+            // MÁ SVÍTILNU I BATERKY — může jít dolů
+            condition: (s) => s.inventory.includes('svitilna') && s.inventory.includes('baterky'),
+            action: [
+              { type: 'SHOW_TEXT', text: 'Tak jdeme dolů. Svítilna naplno, hlava dolu a modlíme se.' },
+              { type: 'CHANGE_SCENE', sceneId: 'scena4' }
+            ]
           },
           {
+            // FALLBACK — nemá světlo
             condition: (s) => true,
             action: { type: 'SHOW_TEXT', text: 'Dolů? Do tý černý díry? Leda ve snu. Tam dole končí sranda a začíná... no, tma a smrad. Bez světla tam nelezu, nerad bych šlápl na něco, co mě sežere.' }
           }
@@ -276,15 +303,101 @@ export const SCENES = {
         hoverText: 'Skříňka s elektrikou',
         onClick: [
           {
+            // OTEVŘENÍ SKŘÍŇKY POMOCÍ PAKLÍČE
             condition: (s) => s.inventory.includes('paklic'),
-            action: { type: 'SHOW_TEXT', text: 'No sláva, vrátnej byl profík! V tý hromadě bordelu jsem našel univerzální paklíč! Doufám, že to nebyl jeho jedinej.' }
+            action: { type: 'OPEN_POPUP', popupId: 'popup_skrinka' }
           },
+          {
+            condition: (s) => true,
+            action: { type: 'SHOW_TEXT', text: 'Zámek je rezavý, ale s paklíčem by to mohlo jít.' }
+          }
+        ],
+      },
+      {
+        id: 'svitilna',
+        label: 'Svítilna',
+        x: 53, y: 73, w: 3, h: 5,
+        hoverText: 'Svítilna',
+        onClick: [
+          {
+            // UŽ JI MÁ V INVENTÁŘI
+            condition: (s) => s.inventory.includes('svitilna'),
+            action: { type: 'SHOW_TEXT', text: 'Svítilna je v kapse. Ještě potřebuju baterky.' }
+          },
+          {
+            // SEBERE SVÍTILNU (fallback)
+            condition: (s) => true,
+            action: [
+              { type: 'SHOW_TEXT', text: 'Pojď ke mně, krásko. Sice jsi celá od oleje a smrdíš jako vyjetá nafta, ale tvůj svit mě povede vstříc lepším zítřkům... sakra, ale došla ti šťáva.' },
+              { type: 'ADD_ITEM', itemId: 'svitilna' }
+            ]
+          }
         ]
-      }
+      },
+
+
     ],
   },
 
+  // POPUP SCÉNA — DETAIL SKŘÍŇKY
+  popup_skrinka: {
+    id: 'popup_skrinka',
+    background: '/scenes/popup1.png',
+    hotspots: [
+      {
+        id: 'baterky',
+        label: 'Baterky',
+        x: 40, y: 50, w: 30, h: 40,
+        hoverText: 'Rozteklé baterky',
+        onClick: [
+          {
+            condition: (s) => true,
+            action: [
+              { type: 'SHOW_TEXT', text: 'Tohle je teda nadělení. Jističe jsou vyhozený a dráty vypadají, že je ohlodali mutanti. Ale hele! Mezi těma ohořelejma kabelama se válí dvě staré, vyteklé baterie. Sice vypadají, že už zažily i VŘSR, ale možná v nich zbyla trocha šťávy. Lepší než drátem do oka.' },
+              { type: 'ADD_ITEM', itemId: 'baterky' }
+            ]
+          }
+        ]
+      }
+    ]
+  },
 
+  scena4: {
+    id: 'scena4',
+    background: '/scenes/scena4.png',
+    hotspots: [
+      {
+        id: 'gumaky',
+        label: 'Gumáky',
+        x: 49, y: 60, w: 8, h: 12,
+        hoverText: 'Gumáky',
+        onClick: [
+          {
+            condition: (s) => true,
+            action: [
+              { type: 'SHOW_TEXT', text: 'Někdo je tu nechal a vzal to odtud nejspíš bosky. Podle toho smradu v nich ta noha musela i zkamenět. Velikost tak čtyřicet šest – v tom by se dalo i veslovat. Radši na ně nebudu sahat. Nerad bych chytil plíseň, co má vlastní občanku.' }
+            ]
+          }
+        ]
+      },
+
+      {
+        id: 'nastroje',
+        label: 'Nástroje',
+        x: 20, y: 65, w: 20, h: 35,
+        hoverText: 'Krabice s nářadím',
+        onClick: [
+          {
+            condition: (s) => true,
+            action: [
+              { type: 'SHOW_TEXT', text: 'Nástroje... No, jestli tím mysleli rezavý hřebíky a ohnutej šroubovák, tak nekecali. Je to prostě hřbitov železářství.' }
+            ]
+          }
+        ]
+
+      }
+    ],
+  },
 };
 
 
@@ -305,21 +418,33 @@ export const ITEMS = {
   paklic: {
     id: 'paklic',
     name: 'Paklíč',
-    image: '/items/paklic.png', // ← nezapomeň nahrát obrázek do /public/items/
+    image: '/items/paklic.png',
     description: 'Starý ohlý paklíč.',
   },
   tyc: {
     id: 'tyc',
     name: 'Tyč',
-    image: '/items/tyc.png', // ← nezapomeň nahrát obrázek do /public/items/
+    image: '/items/tyc.png',
     description: 'Stará ocelová tyč.',
   },
   oblek: {
     id: 'oblek',
     name: 'Oblek',
-    image: '/items/oblek.png', // ← nezapomeň nahrát obrázek do /public/items/
+    image: '/items/oblek.png',
     description: 'Protiradiační oblek',
   },
+  svitilna: {
+    id: 'svitilna',
+    name: 'Svítilna',
+    image: '/items/svitilna.png',
+    description: 'Svítílna, škoda, že jí došla šťáva'
+  },
+  baterky: {
+    id: 'baterky',
+    name: 'Batalerie',
+    image: '/items/baterky.png',
+    description: 'Nové alkalické baterie.'
+  }
 };
 
 // -------------------------------------------------------------

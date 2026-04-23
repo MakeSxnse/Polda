@@ -11,52 +11,55 @@ export default function Home() {
   useEffect(() => {
     // Kontrola, zda existuje uložená pozice (víc než jen výchozí stav)
     const saved = localStorage.getItem('polda_save');
-    if (saved) setHasSave(true);
+    if (saved) {
+      setTimeout(() => setHasSave(true), 0);
+    }
   }, []);
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden font-[family-name:var(--font-denk)]">
+    <div className="relative w-full h-[100dvh] bg-black overflow-hidden font-[family-name:var(--font-denk)]">
+      <div className="relative w-full h-full overflow-hidden">
+        {/* Pozadí scény */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          className="absolute inset-0 w-full h-full object-fill pointer-events-none"
+          src="/scenes/lobby.png"
+          alt="lobby_bg"
+          draggable={false}
+        />
 
-      {/* Pozadí scény */}
-      <img
-        className="absolute inset-0 w-full h-full object-cover"
-        src="/scenes/lobby.png"
-        alt="lobby_bg"
-        draggable={false}
-      />
+        {/* Menu Container */}
+        <div className="absolute inset-0 flex flex-col items-end pr-[10%] pt-[25%] space-y-6">
 
-      {/* Menu Container */}
-      <div className="absolute inset-0 flex flex-col items-end pr-[10%] pt-[25%] space-y-6">
-
-        {/* Tlačítko HRÁT (Nová hra) */}
-        <Link
-          href="/scena1"
-          onClick={() => resetGame()}
-          className="text-blue-500 text-[5rem] text-outlined hover:text-blue-400 transition-colors"
-        >
-          NOVÁ HRA
-        </Link>
-
-        {/* Tlačítko POKRAČOVAT (jen pokud existuje save) */}
-        {hasSave && (
+          {/* Tlačítko HRÁT (Nová hra) */}
           <Link
-            href={`/${gameState.currentScene}`}
+            href="/scena1"
+            onClick={() => resetGame()}
             className="text-blue-500 text-[5rem] text-outlined hover:text-blue-400 transition-colors"
           >
-            POKRAČOVAT
+            NOVÁ HRA
           </Link>
-        )}
 
-        {/* Odkaz JAK HRÁT - Posunutý úplně dolů */}
-        <Link
-          href="/jak-hrat"
-          className="absolute bottom-10 right-[10%] text-blue-500 text-[3rem] text-outlined hover:text-blue-400 transition-colors"
-        >
-          JAK HRÁT
-        </Link>
+          {/* Tlačítko POKRAČOVAT (jen pokud existuje save) */}
+          {hasSave && (
+            <Link
+              href={`/${gameState.currentScene}`}
+              className="text-blue-500 text-[5rem] text-outlined hover:text-blue-400 transition-colors"
+            >
+              POKRAČOVAT
+            </Link>
+          )}
 
+          {/* Odkaz JAK HRÁT - Posunutý úplně dolů */}
+          <Link
+            href="/jak-hrat"
+            className="absolute bottom-10 right-[10%] text-blue-500 text-[3rem] text-outlined hover:text-blue-400 transition-colors"
+          >
+            JAK HRÁT
+          </Link>
+
+        </div>
       </div>
-
     </div>
   );
 }

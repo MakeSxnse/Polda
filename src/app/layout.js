@@ -17,7 +17,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="cs" className={`${denkOne.variable} h-full`}>
-      <body className="h-full overflow-hidden select-none bg-black">
+      <body className="m-0 h-full overflow-hidden select-none bg-black">
         <GameProvider>
           {children}
         </GameProvider>
