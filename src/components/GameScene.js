@@ -12,7 +12,7 @@ import { SCENES } from '../data/gameData';
  */
 export default function GameScene({ sceneId, isPopup = false }) {
   const router = useRouter();
-  const { gameState, recordClick, addItem, updateScene, openPopup, closePopup, showText, clearText } = useGame();
+  const { gameState, recordClick, addItem, updateScene, openPopup, closePopup, showText, clearText, setFlag } = useGame();
 
   const [hoverText, setHoverText] = useState('');
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -20,12 +20,50 @@ export default function GameScene({ sceneId, isPopup = false }) {
 
   const data = SCENES[sceneId];
 
-  // Nastavení aktuální scény v globálním stavu (jen pokud to není popup)
+  const handleAction = (action) => {
+    const execute = () => {
+      if (action.type === 'SHOW_TEXT') showText(action.text);
+      if (action.type === 'CHANGE_SCENE') {
+        clearText();
+        updateScene(action.sceneId);
+        router.push('/' + action.sceneId);
+      }
+      if (action.type === 'ADD_ITEM') addItem(action.itemId);
+      if (action.type === 'OPEN_POPUP') openPopup(action.popupId);
+      if (action.type === 'CLOSE_POPUP') closePopup();
+      if (action.type === 'SET_FLAG') setFlag(action.key, action.value);
+    };
+
+    if (action.delay) {
+      setTimeout(execute, action.delay);
+    } else {
+      execute();
+    }
+  };
+
+  // Nastavení aktuální scény a spuštění onEnter akcí
   useEffect(() => {
     if (!isPopup && sceneId) {
       updateScene(sceneId);
+      
+      // Spuštění automatických akcí při vstupu do scény
+      if (data?.onEnter) {
+        const entries = Array.isArray(data.onEnter) ? data.onEnter : [data.onEnter];
+        entries.forEach(entry => {
+          // Pokud má entry condition, zkontrolujeme ji. Pokud ne, bereme ji jako vždy platnou.
+          if (!entry.condition || entry.condition(gameState)) {
+            // Pokud má entry vlastnost 'action', provedeme ji/je. 
+            // Jinak bereme celou entry jako jednu akci (pro zpětnou kompatibilitu).
+            const actions = entry.action 
+              ? (Array.isArray(entry.action) ? entry.action : [entry.action])
+              : [entry];
+            
+            actions.forEach(handleAction);
+          }
+        });
+      }
     }
-  }, [sceneId, isPopup, updateScene]);
+  }, [sceneId, isPopup, updateScene, data]);
 
   // Mezerník — problikne hotspoty bíle
   useEffect(() => {
@@ -49,18 +87,6 @@ export default function GameScene({ sceneId, isPopup = false }) {
     setMousePos({ x: e.clientX, y: e.clientY });
   };
 
-  const handleAction = (action) => {
-    if (action.type === 'SHOW_TEXT') showText(action.text);
-    if (action.type === 'CHANGE_SCENE') {
-      clearText();
-      updateScene(action.sceneId);
-      router.push('/' + action.sceneId);
-    }
-    if (action.type === 'ADD_ITEM') addItem(action.itemId);
-    if (action.type === 'OPEN_POPUP') openPopup(action.popupId);
-    if (action.type === 'CLOSE_POPUP') closePopup();
-  };
-
   const containerClasses = isPopup
     ? "absolute inset-0 flex items-center justify-center bg-black/60 z-50 p-[5%]"
     : "relative w-full h-[100dvh] bg-black overflow-hidden";
@@ -78,16 +104,33 @@ export default function GameScene({ sceneId, isPopup = false }) {
           draggable={false}
         />
 
+        {/* Speciální overlay pro tmu v Scéně 4 */}
+        {sceneId === 'scena4' && gameState.flags.mistnost_zatemnena && !gameState.flags.paka_zatazena && (
+          <div 
+            className="absolute inset-0 bg-black z-20 flex flex-col items-center justify-center text-white p-10 text-center cursor-pointer"
+            onClick={() => {
+              setFlag('paka_zatazena', true);
+              showText('Cvak! No sláva, už vidím na špičku vlastního nosu.');
+            }}
+          >
+            <p className="text-3xl italic max-w-2xl animate-pulse">
+              "Je tu tma jak v pytli, jediný, čeho sem si všiml, je tato páka, zkusím za ní zatáhnout."
+            </p>
+            <div className="mt-8 text-sm opacity-50 uppercase tracking-widest font-bold">[ Klikni pro zatažení za páku ]</div>
+          </div>
+        )}
+
         {/* Hotspoty */}
         {data.hotspots.map(h => (
           <div
             key={h.id}
-            className={`absolute cursor-pointer transition-colors z-10 ${showHotspots ? 'bg-white/20' : 'hover:bg-white/40'}`}    //ODSTRANĚNÍ HOVERU TADY    
+            className={`absolute cursor-pointer transition-colors ${showHotspots ? 'border-4 border-red-600/60' : 'hover:bg-white/40'}`}    //ODSTRANĚNÍ HOVERU TADY    
             style={{
               left: h.x + '%',
               top: h.y + '%',
               width: h.w + '%',
-              height: h.h + '%'
+              height: h.h + '%',
+              zIndex: h.zIndex || 10
             }}
             onMouseEnter={() => setHoverText(h.hoverText || '')}
             onMouseLeave={() => setHoverText('')}

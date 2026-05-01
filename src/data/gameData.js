@@ -106,8 +106,6 @@ export const SCENES = {
     ],
   },
 
-  // ← DRUHÁ SCÉNA
-  // ← DRUHÁ SCÉNA
   scena2: {
     id: 'scena2',
     background: '/scenes/scena2.png',
@@ -156,7 +154,6 @@ export const SCENES = {
         hoverText: 'Rozbité okno',
         onClick: [
           {
-            // MÁ TYČ — použije ji k vyšplhání
             condition: (s) => s.inventory.includes('tyc'),
             action: [
               { type: 'SHOW_TEXT', text: 'Tyč jako žebřík. Starý trik. A moje záda mi to nikdy neodpustí.' },
@@ -164,7 +161,6 @@ export const SCENES = {
             ]
           },
           {
-            // FALLBACK — nemá tyč
             condition: (s) => true,
             action: { type: 'SHOW_TEXT', text: 'To okno je vysoko. Moje klouby už dávno nejsou to, co bejvaly v devadesátkách. Kdybych se pokusil tam vyskočit, skončím na JIPce dřív, než stačím zaklepat na sklo.' },
           },
@@ -178,7 +174,6 @@ export const SCENES = {
         hoverText: 'Stará matrace',
         onClick: [
           {
-            // POUŽITÍ PŘEDMĚTU (Priorita)
             condition: (s) => s.inventory.includes('tyc'),
             action: [
               { type: 'SHOW_TEXT', text: 'Šprajcnout, podepřít a... tradá! Teď je to stabilní jako státní rozpočet těsně před volbama. Vypadá to sice blbě, ale svoji funkci to splní.' },
@@ -186,17 +181,14 @@ export const SCENES = {
             ],
           },
           {
-            // PRVNÍ KLIKNUTÍ
             condition: (s) => (s.clickCounts?.['scena2_matrace'] || 0) === 0,
             action: { type: 'SHOW_TEXT', text: 'Fuj tajbl, ta už něco pamatuje. Je smradlavá, flekatá a těžká jako hříchy mýho mládí. Ale na spaní ji nechci, to je jasný.' },
           },
           {
-            // DRUHÉ KLIKNUTÍ
             condition: (s) => (s.clickCounts?.['scena2_matrace'] || 0) === 1,
             action: { type: 'SHOW_TEXT', text: 'Nejsem sebevrah. Na tohle stoupnout, tak se prohnu až k zemi a vyrazím si dech. To chce nějakou vzpěru.' },
           },
           {
-            // DALŠÍ KLIKNUTÍ
             condition: (s) => true,
             action: { type: 'SHOW_TEXT', text: 'Bez nějaké tyče nebo podpěry s tou matrací nic nevymyslím.' },
           },
@@ -210,17 +202,14 @@ export const SCENES = {
         hoverText: 'Lampa',
         onClick: [
           {
-            // POKUD UŽ TYČ MÁ
             condition: (s) => s.inventory.includes('tyc'),
             action: { type: 'SHOW_TEXT', text: 'Ta tyč už mi říká pane. Bez ní už ta lampa vypadá tak nějak smutně.' },
           },
           {
-            // PRVNÍ KLIKNUTÍ
             condition: (s) => (s.clickCounts?.['scena2_tyc'] || 0) === 0,
             action: { type: 'SHOW_TEXT', text: 'Hm, divím se, že ještě svítí. Tady zezadu něco kouká. Stará tyč, co drží tu lampu. Vypadá dost bytelně.' },
           },
           {
-            // DRUHÉ KLIKNUTÍ (sebere tyč)
             condition: (s) => (s.clickCounts?.['scena2_tyc'] || 0) === 1,
             action: [
               { type: 'SHOW_TEXT', text: 'Zkusím to teda utrhnout... Povedlo se!' },
@@ -228,7 +217,6 @@ export const SCENES = {
             ],
           },
           {
-            // OSTATNÍ (fallback)
             condition: (s) => true,
             action: { type: 'SHOW_TEXT', text: 'Lampa už je bez té tyče jen kus šrotu.' },
           },
@@ -281,7 +269,6 @@ export const SCENES = {
         hoverText: 'Jít dolů',
         onClick: [
           {
-            // MÁ SVÍTILNU I BATERKY — může jít dolů
             condition: (s) => s.inventory.includes('svitilna') && s.inventory.includes('baterky'),
             action: [
               { type: 'SHOW_TEXT', text: 'Tak jdeme dolů. Svítilna naplno, hlava dolu a modlíme se.' },
@@ -289,7 +276,6 @@ export const SCENES = {
             ]
           },
           {
-            // FALLBACK — nemá světlo
             condition: (s) => true,
             action: { type: 'SHOW_TEXT', text: 'Dolů? Do tý černý díry? Leda ve snu. Tam dole končí sranda a začíná... no, tma a smrad. Bez světla tam nelezu, nerad bych šlápl na něco, co mě sežere.' }
           }
@@ -303,7 +289,6 @@ export const SCENES = {
         hoverText: 'Skříňka s elektrikou',
         onClick: [
           {
-            // OTEVŘENÍ SKŘÍŇKY POMOCÍ PAKLÍČE
             condition: (s) => s.inventory.includes('paklic'),
             action: { type: 'OPEN_POPUP', popupId: 'popup_skrinka' }
           },
@@ -320,12 +305,10 @@ export const SCENES = {
         hoverText: 'Svítilna',
         onClick: [
           {
-            // UŽ JI MÁ V INVENTÁŘI
             condition: (s) => s.inventory.includes('svitilna'),
             action: { type: 'SHOW_TEXT', text: 'Svítilna je v kapse. Ještě potřebuju baterky.' }
           },
           {
-            // SEBERE SVÍTILNU (fallback)
             condition: (s) => true,
             action: [
               { type: 'SHOW_TEXT', text: 'Pojď ke mně, krásko. Sice jsi celá od oleje a smrdíš jako vyjetá nafta, ale tvůj svit mě povede vstříc lepším zítřkům... sakra, ale došla ti šťáva.' },
@@ -395,18 +378,216 @@ export const SCENES = {
           }
         ]
 
+      },
+
+      {
+        id: 'dvere',
+        label: 'Dveře',
+        x: 60, y: 15, w: 12, h: 55,
+        hoverText: 'Dveře',
+        onClick: [
+          {
+            condition: (s) => s.inventory.includes('klic_sklep'),
+            action: [
+              { type: 'SET_FLAG', key: 'mistnost_zatemnena', value: true },
+            ]
+          },
+          {
+            condition: (s) => true,
+            action: [
+              { type: 'SHOW_TEXT', text: 'Zámek ani necvakne.' }
+            ]
+          }
+        ]
+
+      },
+
+      {
+        id: 'klice',
+        label: 'Krabice klíčů',
+        x: 70, y: 65, w: 10, h: 10,
+        hoverText: 'Krabice klíčů',
+        onClick: [
+          {
+            condition: (s) => true,
+            action: [
+              { type: 'ADD_ITEM', itemId: 'klic_sklep' },
+              { type: 'SHOW_TEXT', text: 'Těch klíčů je tu víc než v klíčenství u nás na rohu. Každý má jiný zoubky a jinou barvu rzi. Ale tento... ten je vyleštěnej, jako by je někdo používal denně. Tak ho beru.' }
+            ]
+          }
+        ]
+      },
+
+      {
+        id: 'oblek',
+        label: 'Protiradiační oblek',
+        x: 75, y: 15, w: 15, h: 45,
+        hoverText: 'Oblek',
+        onClick: [
+          {
+            condition: (s) => s.inventory.includes('oblek'),
+            action: { type: 'CHANGE_SCENE', sceneId: 'scena5' }
+          },
+          {
+            condition: (s) => s.flags.paka_zatazena,
+            action: [
+              { type: 'SHOW_TEXT', text: 'Tak a je dole. Trochu se při tom pádu zvířil prach z roku raz dva, ale oblek vypadá v cajku. Šedá mu sluší, je to taková nenápadná barva pro nenápadnýho hrdinu, jako jsem já. Jdeme se do toho nasoukat.' },
+              { type: 'ADD_ITEM', itemId: 'oblek' }
+            ]
+          },
+          {
+            // Výchozí stav (před rozsvícením)
+            condition: (s) => true,
+            action: { type: 'SHOW_TEXT', text: 'Ten oblek tam visí jak vycpanej kosmonaut. Je to přesně v tý vejšce, kam nedosáhnu, ani kdybych se rozkrájel. Musím najít způsob, jak ten věšák dostat dolů, jinak budu nahoře svítit jak vánoční stromeček i bez baterek.' }
+          }
+        ]
       }
     ],
+  },
+
+  scena5: {
+    id: 'scena5',
+    background: '/scenes/scena5.png',
+    hotspots: [
+      {
+        id: 'nahoru',
+        label: 'nahoru',
+        x: 1,
+        y: -20,
+        w: 30,
+        h: 100,
+        hoverText: 'Jít nahoru',
+        onClick: [
+          {
+            condition: (s) => s.inventory.includes('oblek'),
+            action: { type: 'CHANGE_SCENE', sceneId: 'scena6' }
+          },
+          {
+            condition: (s) => true,
+            action: { type: 'SHOW_TEXT', text: 'Tak nahoře už šli asi spát. Můj tenzometr mi tam ale hlásí vysokou radiaci. Bez obleku ani ránu. Nerad bych, aby mi narostla třetí ruka, i když na psaní protokolů by se hodila.' }
+          }
+        ],
+      },
+
+      {
+        id: 'dolu',
+        label: 'dolu',
+        x: 75, y: -10, w: 30, h: 100,
+        hoverText: 'Jít dolů',
+        onClick: [
+          {
+            // FALLBACK — nemá světlo
+            condition: (s) => true,
+            action: { type: 'SHOW_TEXT', text: 'Všechno, co potřebuju, už z tam mám.' }
+          }
+        ]
+      },
+
+      {
+        id: 'elektricka_skrinka',
+        label: 'Skříňka s elektrikou',
+        x: 65, y: 33, w: 8, h: 20,
+        hoverText: 'Skříňka s elektrikou',
+        onClick: [
+          {
+            condition: (s) => true,
+            action: { type: 'SHOW_TEXT', text: 'Kromě baterek už v ní nic zajímavého není.' }
+          }
+        ],
+      },
+      {
+        id: 'svitilna',
+        label: 'Svítilna',
+        x: 53, y: 73, w: 3, h: 5,
+        hoverText: 'Svítilna',
+        onClick: [
+          {
+            condition: (s) => true,
+            action: [
+              { type: 'SHOW_TEXT', text: 'Přece už ji mám, ale proč je tu zase?..' },
+            ]
+          }
+        ]
+      },
+
+    ],
+  },
+
+  scena6: {
+    id: 'scena6',
+    background: '/scenes/scena6.png',
+    hotspots: [
+      {
+        id: 'rozpadle_schodiste',
+        label: 'rozpadle_schodiste',
+        x: 40,
+        y: 30,
+        w: 20,
+        h: 50,
+        hoverText: 'Rozpadlé schodiště',
+        onClick: [
+          {
+            condition: (s) => true,
+            action: { type: 'SHOW_TEXT', text: 'No to mě podrž. Cesta končí dřív, než začala. Schody se prostě rozhodly, že už je tohle patro nebaví a zřítily se o úroveň níž. Ze zdi trčí jenom pár ohnutých drátů jako vyceněný zuby. Tudy neprojde ani myš, natož já s těma olověnýma botama.' }
+          }
+        ]
+      },
+
+      {
+        id: 'vytah',
+        label: 'vytah',
+        x: 70, y: 20, w: 20, h: 70,
+        hoverText: 'Výtah',
+        onClick: [
+          {
+            condition: (s) => true,
+            action: [
+              { type: 'SHOW_TEXT', text: 'Dveře se otevřely jen tak na půl, musel jsem jim pomoct ramenem. Uvnitř to smrdí jako v uzavřený plechovce od sardinek, co ležela rok na sluníčku. Světlo v kabině poblikává, jako by mi chtělo morseovkou říct: \'Běda ti!\'' },
+              { type: 'CHANGE_SCENE', sceneId: 'scena7', delay: 1500 }
+            ]
+          },
+        ]
+      }
+    ]
+  },
+
+  scena7: {
+    id: 'scena7',
+    background: '/scenes/scena7.png',
+    onEnter: [
+      {
+        condition: (s) => !s.flags.scena7_intro_hotovo,
+        action: [
+          { type: 'SET_FLAG', key: 'scena7_intro_hotovo', value: true },
+          { type: 'SHOW_TEXT', text: 'Nastavil jsem tam čtvrté patro, tak uvidíme, kde mě to vysadí.', delay: 500 },
+          { type: 'SHOW_TEXT', text: 'Jedeme. Vrrr-skřííí. Každý patro doprovází takovej ten zvuk, jako když brousíš nůž o beton. Dva... tři... no tak, ještě kousek...', delay: 4500 },
+          { type: 'SHOW_TEXT', text: 'Kabinou to škublo tak, že mi cvakly zuby o sklo masky. A ticho. To nejhorší ticho na světě. Světlo zhaslo a zbyla jen ta moje bludička na rameni. \'Tak a je to,\' řekl by Pat nebo Mat. Já říkám něco mnohem sprostšího.', delay: 9500 },
+          { type: 'SHOW_TEXT', text: 'Dveře se ani nehnou. Jsou zablokovaný někde mezi patry. Koukám přímo do betonový zdi šachty. Tohle je past na myši a já jsem ta myš. Musím se odsud dostat, než mi v týhle masce dojde trpělivost... nebo kyslík.', delay: 16000 }
+        ]
+      }
+    ],
+    hotspots: [
+      {
+        id: 'dira_ve_strope',
+        label: 'dira_ve_strope',
+        x: 50,
+        y: 10,
+        w: 20,
+        h: 20,
+        hoverText: 'Díra ve stropě',
+        onClick: [
+          {
+            condition: (s) => true,
+            action: { type: 'SHOW_TEXT', text: 'Zatraceně, ta díra ve stropě vypadá, že by se tam dalo projít...', delay: 2000 },
+            action: { type: 'CHANGE_SCENE', sceneId: 'scena8' }
+          }
+        ]
+      }
+    ]
   },
 };
 
 
-
-// -------------------------------------------------------------
-//  ITEMY
-//  Předměty, které hráč může sebrat do inventáře.
-//  image → cesta k PNG v /public/items/
-// -------------------------------------------------------------
 
 export const ITEMS = {
   stipacky: {
@@ -447,11 +628,7 @@ export const ITEMS = {
   }
 };
 
-// -------------------------------------------------------------
-//  HÁDANKY
-//  Typy: 'code_input' (zadání kódu), přidej další dle potřeby.
-//  onSolve / onFail → action dispatch po vyřešení / špatné odpovědi
-// -------------------------------------------------------------
+
 
 export const PUZZLES = {
 

@@ -15,7 +15,6 @@ export function GameProvider({ children }) {
     activeText: null // Aktuálně zobrazený dialog (transient)
   });
 
-  // 1. Načtení dat při startu
   useEffect(() => {
     const saved = localStorage.getItem('polda_save');
     setTimeout(() => {
