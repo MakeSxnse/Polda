@@ -21,21 +21,24 @@ export default function GameScene({ sceneId, isPopup = false }) {
   const data = SCENES[sceneId];
 
   const handleAction = (action) => {
+    // Podpora pro dynamické akce — pokud je akce funkce, zavoláme ji s aktuálním stavem
+    const act = typeof action === 'function' ? action(gameState) : action;
+
     const execute = () => {
-      if (action.type === 'SHOW_TEXT') showText(action.text);
-      if (action.type === 'CHANGE_SCENE') {
+      if (act.type === 'SHOW_TEXT') showText(act.text);
+      if (act.type === 'CHANGE_SCENE') {
         clearText();
-        updateScene(action.sceneId);
-        router.push('/' + action.sceneId);
+        updateScene(act.sceneId);
+        router.push('/' + act.sceneId);
       }
-      if (action.type === 'ADD_ITEM') addItem(action.itemId);
-      if (action.type === 'OPEN_POPUP') openPopup(action.popupId);
-      if (action.type === 'CLOSE_POPUP') closePopup();
-      if (action.type === 'SET_FLAG') setFlag(action.key, action.value);
+      if (act.type === 'ADD_ITEM') addItem(act.itemId);
+      if (act.type === 'OPEN_POPUP') openPopup(act.popupId);
+      if (act.type === 'CLOSE_POPUP') closePopup();
+      if (act.type === 'SET_FLAG') setFlag(act.key, act.value);
     };
 
-    if (action.delay) {
-      setTimeout(execute, action.delay);
+    if (act.delay) {
+      setTimeout(execute, act.delay);
     } else {
       execute();
     }
@@ -45,7 +48,7 @@ export default function GameScene({ sceneId, isPopup = false }) {
   useEffect(() => {
     if (!isPopup && sceneId) {
       updateScene(sceneId);
-      
+
       // Spuštění automatických akcí při vstupu do scény
       if (data?.onEnter) {
         const entries = Array.isArray(data.onEnter) ? data.onEnter : [data.onEnter];
@@ -54,10 +57,10 @@ export default function GameScene({ sceneId, isPopup = false }) {
           if (!entry.condition || entry.condition(gameState)) {
             // Pokud má entry vlastnost 'action', provedeme ji/je. 
             // Jinak bereme celou entry jako jednu akci (pro zpětnou kompatibilitu).
-            const actions = entry.action 
+            const actions = entry.action
               ? (Array.isArray(entry.action) ? entry.action : [entry.action])
               : [entry];
-            
+
             actions.forEach(handleAction);
           }
         });
@@ -93,7 +96,10 @@ export default function GameScene({ sceneId, isPopup = false }) {
 
   return (
     <div className={containerClasses} onMouseMove={handleMouseMove}>
-      <div className={`relative w-full h-full shadow-2xl overflow-hidden ${isPopup ? 'ring-4 ring-black' : ''}`}>
+      <div
+        className={`relative shadow-2xl overflow-hidden ${isPopup ? 'ring-4 ring-black h-full' : 'w-full h-full'}`}
+        style={isPopup ? { aspectRatio: data.aspectRatio || '16/10' } : {}}
+      >
 
         {/* Pozadí scény */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -106,7 +112,7 @@ export default function GameScene({ sceneId, isPopup = false }) {
 
         {/* Speciální overlay pro tmu v Scéně 4 */}
         {sceneId === 'scena4' && gameState.flags.mistnost_zatemnena && !gameState.flags.paka_zatazena && (
-          <div 
+          <div
             className="absolute inset-0 bg-black z-20 flex flex-col items-center justify-center text-white p-10 text-center cursor-pointer"
             onClick={() => {
               setFlag('paka_zatazena', true);
@@ -124,7 +130,7 @@ export default function GameScene({ sceneId, isPopup = false }) {
         {data.hotspots.map(h => (
           <div
             key={h.id}
-            className={`absolute cursor-pointer transition-colors ${showHotspots ? 'border-4 border-red-600/60' : 'hover:bg-white/40'}`}    //ODSTRANĚNÍ HOVERU TADY    
+            className={`absolute cursor-pointer transition-colors ${showHotspots ? 'border-4 border-red-600/60' : ''}`}    //ODSTRANĚNÍ HOVERU TADY    
             style={{
               left: h.x + '%',
               top: h.y + '%',
@@ -144,6 +150,64 @@ export default function GameScene({ sceneId, isPopup = false }) {
             }}
           />
         ))}
+
+        {/* Puzzle - Textový vstup (Kódový zámek) */}
+        {data.puzzle && data.puzzle.type === 'code_input' && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 z-30 animate-in fade-in duration-500">
+            <div className="bg-zinc-900/90 backdrop-blur-md p-10 rounded-2xl border border-zinc-700 shadow-[0_0_50px_rgba(0,0,0,0.5)] text-center max-w-sm w-full mx-4">
+              <h3 className="text-zinc-400 uppercase tracking-[0.2em] text-sm mb-6 font-bold">
+                {data.puzzle.question || 'Zadejte přístupový kód'}
+              </h3>
+
+              <div className="relative mb-8">
+                <input
+                  type="text"
+                  id="puzzle-input"
+                  placeholder="____"
+                  className="bg-black/50 text-white text-5xl tracking-[0.3em] font-mono border-b-2 border-zinc-700 py-4 px-2 text-center w-full outline-none focus:border-blue-500 transition-all duration-300 placeholder:opacity-20"
+                  autoFocus
+                  autoComplete="off"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      const val = e.target.value;
+                      if (val === data.puzzle.solution) {
+                        const acts = Array.isArray(data.puzzle.onSolve) ? data.puzzle.onSolve : [data.puzzle.onSolve];
+                        acts.forEach(handleAction);
+                      } else {
+                        const acts = Array.isArray(data.puzzle.onFail) ? data.puzzle.onFail : [data.puzzle.onFail];
+                        acts.forEach(handleAction);
+                        e.target.value = ''; // Reset on fail
+                      }
+                    }
+                  }}
+                />
+              </div>
+
+              <div className="flex flex-col gap-3">
+                <button
+                  onClick={() => {
+                    const input = document.getElementById('puzzle-input');
+                    const val = input.value;
+                    if (val === data.puzzle.solution) {
+                      const acts = Array.isArray(data.puzzle.onSolve) ? data.puzzle.onSolve : [data.puzzle.onSolve];
+                      acts.forEach(handleAction);
+                    } else {
+                      const acts = Array.isArray(data.puzzle.onFail) ? data.puzzle.onFail : [data.puzzle.onFail];
+                      acts.forEach(handleAction);
+                      input.value = '';
+                    }
+                  }}
+                  className="bg-white text-black hover:bg-blue-500 hover:text-white py-4 rounded-xl font-bold uppercase tracking-widest transition-all duration-300 active:scale-95"
+                >
+                  Ověřit kód
+                </button>
+                <p className="text-zinc-600 text-xs mt-2 italic">
+                  [ Stiskněte ENTER pro rychlé potvrzení ]
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Tlačítko pro zavření popupu */}
         {isPopup && (

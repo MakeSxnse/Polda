@@ -570,18 +570,145 @@ export const SCENES = {
       {
         id: 'dira_ve_strope',
         label: 'dira_ve_strope',
-        x: 50,
-        y: 10,
-        w: 20,
-        h: 20,
+        x: 23,
+        y: 5,
+        w: 15,
+        h: 12,
         hoverText: 'Díra ve stropě',
         onClick: [
           {
             condition: (s) => true,
-            action: { type: 'SHOW_TEXT', text: 'Zatraceně, ta díra ve stropě vypadá, že by se tam dalo projít...', delay: 2000 },
-            action: { type: 'CHANGE_SCENE', sceneId: 'scena8' }
+            action: [
+              { type: 'SHOW_TEXT', text: 'Zatraceně, ta díra ve stropě vypadá, že by se tam dalo projít...', delay: 2000 },
+              { type: 'CHANGE_SCENE', sceneId: 'scena8' }
+            ]
           }
         ]
+      }
+    ]
+  },
+
+  scena8: {
+    id: 'scena8',
+    background: '/scenes/scena8.png',
+    hotspots: [
+      {
+        id: 'lezt_nahoru',
+        label: 'Lézt nahoru',
+        x: 0,
+        y: 0,
+        w: 100,
+        h: 20,
+        hoverText: 'Lézt nahoru',
+        onClick: [
+          {
+            condition: (s) => s.inventory.includes('nozik'),
+            action: [
+              { type: 'CHANGE_SCENE', sceneId: 'scena9' }
+            ]
+          },
+          {
+            condition: (s) => true,
+            action: { type: 'SHOW_TEXT', text: 'Ještě jsi nenašel všechno. Cítím, že se tu někde povaluje něco, co by se mohlo hodit, než se vydám nahoru do neznáma.' }
+          }
+        ]
+      },
+      {
+        id: 'nozik',
+        label: 'Kapesní nožík',
+        x: 71, y: 48, w: 3, h: 10,
+        hoverText: 'Kapesní nožík',
+        onClick: [
+          {
+            condition: (s) => true,
+            action: [
+              { type: 'SHOW_TEXT', text: 'Někdo ho tu nechal zapíchnutej v trámku. Rukojeť je omotaná izolačkou, čepel vypadá celkem solidně. Možná tu zbyl po posledním opraváři, co měl víc štěstí než já. Beru ho!' },
+              { type: 'ADD_ITEM', itemId: 'nozik' }
+            ]
+          },
+        ]
+      }
+    ]
+  },
+
+  scena9: {
+    id: 'scena9',
+    background: '/scenes/scena9.png',
+    hotspots: [
+      {
+        id: 'kodovy_zamek',
+        label: 'Kódový zámek',
+        x: 8, y: 48, w: 4, h: 13,
+        hoverText: 'Kódový zámek',
+        onClick: [
+          {
+            condition: (s) => !s.flags.zamek_otevren,
+            action: [
+              { type: 'SHOW_TEXT', text: 'Je to zamčený. Ale vypadá to, že by to mohlo jít otevřít.' },
+              { type: 'OPEN_POPUP', popupId: 'popup_zamek' }
+            ]
+          },
+          {
+            condition: (s) => s.flags.zamek_otevren,
+            action: { type: 'CHANGE_SCENE', sceneId: 'scena10' }
+          }
+        ]
+      },
+      {
+        id: 'noviny',
+        label: 'Noviny',
+        x: 46,
+        y: 62,
+        w: 6,
+        h: 7,
+        hoverText: 'Noviny',
+        onClick: [
+          {
+            condition: (s) => true,
+            action: [
+              { type: 'SHOW_TEXT', text: 'Dotazník: Kolik písmen měla barva skříňky, skříňky, skříňky. Počkat, že by to byla nějaká hádanka.....' },
+              { type: 'OPEN_POPUP', popupId: 'popup_noviny' }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+  popup_zamek: {
+    id: 'popup_zamek',
+    background: '/scenes/popup3.png',
+    aspectRatio: '0.65',
+    puzzle: {
+      type: 'code_input',
+      question: 'VLOŽTE KÓD',
+      solution: '2641',
+      onSolve: [
+        { type: 'SET_FLAG', key: 'zamek_otevren', value: true },
+        { type: 'SHOW_TEXT', text: 'Cvak! Zámek se s hlasitým skřípěním otevřel. Povedlo se.' },
+        { type: 'CLOSE_POPUP' }
+      ],
+      onFail: { type: 'SHOW_TEXT', text: 'Přístup odepřen. Neplatný kód.' }
+    },
+    hotspots: []
+  },
+
+  popup_noviny: {
+    id: 'popup_noviny',
+    background: '/scenes/popup2.jpg',
+    hotspots: []
+  },
+
+  scena10: {
+    id: 'scena10',
+    background: '/scenes/scena10.png',
+    hotspots: [
+      {
+        id: 'konec',
+        label: 'Konec',
+        x: 40, y: 40, w: 20, h: 20,
+        hoverText: 'Pokračování příště...',
+        onClick: [{ condition: (s) => true, action: { type: 'SHOW_TEXT', text: 'Gratuluji! Právě jsi dokončil tuto část hry. Pokračování příště...' } }]
       }
     ]
   },
@@ -625,6 +752,12 @@ export const ITEMS = {
     name: 'Batalerie',
     image: '/items/baterky.png',
     description: 'Nové alkalické baterie.'
+  },
+  nozik: {
+    id: 'nozik',
+    name: 'Kapesní nožík',
+    image: '/items/nozik.png',
+    description: 'Starý kapesní nožík.'
   }
 };
 
