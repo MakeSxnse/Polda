@@ -1,4 +1,4 @@
-<h1>VLASTNÍ VERZE HRY POLDA</h1>
+o<h1>VLASTNÍ VERZE HRY POLDA</h1>
 
 <h3>Použité technologie:</h3>
 <p>Next.js (pro postavení webu)</p>
@@ -16,4 +16,4 @@
 <h3>7.5. 2026</h3>
 <h4>Co jsem dnes udělal:</h4>
 <p> - dodělal progres hry po scénu 9</p>
-<p> - upravil bugy</p>
+<p> - opravil bugy</p>
