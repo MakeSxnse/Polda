@@ -1,4 +1,4 @@
-o<h1>VLASTNÍ VERZE HRY POLDA</h1>
+<h1>VLASTNÍ VERZE HRY POLDA</h1>
 
 <h3>Použité technologie:</h3>
 <p>Next.js (pro postavení webu)</p>
