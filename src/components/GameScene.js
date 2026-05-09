@@ -15,6 +15,7 @@ export default function GameScene({ sceneId, isPopup = false }) {
   const { gameState, recordClick, addItem, updateScene, openPopup, closePopup, showText, clearText, setFlag } = useGame();
 
   const [hoverText, setHoverText] = useState('');
+  const [credits, setCredits] = useState('');
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [showHotspots, setShowHotspots] = useState(false);
 
@@ -26,6 +27,7 @@ export default function GameScene({ sceneId, isPopup = false }) {
 
     const execute = () => {
       if (act.type === 'SHOW_TEXT') showText(act.text);
+      if (act.type === 'SHOW_CREDITS') setCredits(act.text);
       if (act.type === 'CHANGE_SCENE') {
         clearText();
         updateScene(act.sceneId);
@@ -35,6 +37,9 @@ export default function GameScene({ sceneId, isPopup = false }) {
       if (act.type === 'OPEN_POPUP') openPopup(act.popupId);
       if (act.type === 'CLOSE_POPUP') closePopup();
       if (act.type === 'SET_FLAG') setFlag(act.key, act.value);
+      if (act.type === 'GO_TO_LOBBY') {
+        window.location.href = '/';
+      }
     };
 
     if (act.delay) {
@@ -97,9 +102,17 @@ export default function GameScene({ sceneId, isPopup = false }) {
   return (
     <div className={containerClasses} onMouseMove={handleMouseMove}>
       <div
-        className={`relative shadow-2xl overflow-hidden ${isPopup ? 'ring-4 ring-black h-full' : 'w-full h-full'}`}
+        className={`relative shadow-2xl overflow-hidden ${isPopup ? 'ring-4 ring-black h-full' : 'w-full h-full'} ${gameState.flags.trigger_glitch ? 'animate-shake animate-glitch' : ''}`}
         style={isPopup ? { aspectRatio: data.aspectRatio || '16/10' } : {}}
       >
+        {/* Černá clona pro filmové přechody */}
+        <div className={`blackout-overlay ${gameState.flags.trigger_glitch || gameState.flags.trigger_blackout ? 'active' : ''}`} />
+
+        {/* Vycentrované titulky */}
+        <div className={`credits-overlay ${credits ? 'active' : ''}`}>
+          <h1 className="credits-title">KONEC</h1>
+          <p className="credits-text">{credits}</p>
+        </div>
 
         {/* Pozadí scény */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -127,10 +140,10 @@ export default function GameScene({ sceneId, isPopup = false }) {
         )}
 
         {/* Hotspoty */}
-        {data.hotspots.map(h => (
+        {data.hotspots.filter(h => !h.condition || h.condition(gameState)).map(h => (
           <div
             key={h.id}
-            className={`absolute cursor-pointer transition-colors ${showHotspots ? 'border-4 border-red-600/60' : ''}`}    //ODSTRANĚNÍ HOVERU TADY    
+            className={`absolute cursor-pointer transition-colors ${showHotspots ? 'border-4 border-red-600/40' : ''}`}
             style={{
               left: h.x + '%',
               top: h.y + '%',
@@ -219,27 +232,27 @@ export default function GameScene({ sceneId, isPopup = false }) {
           </button>
         )}
 
-        {/* Rekurzivní renderování popupu, pokud je aktivní a my jsme hlavní scéna */}
+        {/* Rekurzivní renderování popupu */}
         {!isPopup && gameState.activePopup && (
           <GameScene sceneId={gameState.activePopup} isPopup={true} />
         )}
-
-        {/* Textové pole (Titulky) - Vykreslujeme ho jen v hlavní scéně, aby bylo přes celou šířku */}
-        {!isPopup && gameState.activeText && (
-          <div
-            className="absolute bottom-[5%] left-0 right-0 p-6 bg-black/85 text-white text-2xl text-center cursor-pointer z-[60] animate-in fade-in slide-in-from-bottom-4 duration-300"
-            onClick={clearText}
-          >
-            {gameState.activeText}
-            <div className="text-sm mt-3 font-bold text-blue-400 uppercase tracking-widest">[ Pokračovat ]</div>
-          </div>
-        )}
       </div>
+
+      {/* Textové pole (Titulky) - Přesunuto mimo vnitřní div a zvednut z-index */}
+      {!isPopup && gameState.activeText && (
+        <div
+          className="fixed bottom-[10%] left-[10%] right-[10%] p-8 bg-black/90 text-white text-2xl text-center cursor-pointer z-[10001] animate-in fade-in slide-in-from-bottom-4 duration-300 border-2 border-blue-500/30 rounded-xl shadow-[0_0_30px_rgba(0,0,0,0.8)]"
+          onClick={clearText}
+        >
+          {gameState.activeText}
+          <div className="text-sm mt-3 font-bold text-blue-400 uppercase tracking-widest">[ Pokračovat ]</div>
+        </div>
+      )}
 
       {/* Tooltip u myši */}
       {hoverText && (
         <div
-          className="fixed pointer-events-none z-[100] text-white text-3xl font-bold select-none drop-shadow-[0_2px_2px_rgba(0,0,0,1)]"
+          className="fixed pointer-events-none z-[110] text-white text-3xl font-bold select-none drop-shadow-[0_2px_2px_rgba(0,0,0,1)]"
           style={{
             left: mousePos.x + 25 + 'px',
             top: mousePos.y - 45 + 'px'

@@ -15,37 +15,45 @@ export function GameProvider({ children }) {
     activeText: null // Aktuálně zobrazený dialog (transient)
   });
 
+  // 1. Načtení dat při startu
   useEffect(() => {
     const saved = localStorage.getItem('polda_save');
-    setTimeout(() => {
-      if (saved) {
-        try {
-          const parsed = JSON.parse(saved);
-          setGameState(prev => ({
-            ...prev,
-            ...parsed,
-            isReady: true
-          }));
-        } catch (e) {
-          console.error("Chyba při načítání savu:", e);
-          setGameState(prev => ({ ...prev, isReady: true }));
-        }
-      } else {
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        setGameState(prev => ({
+          ...prev,
+          ...parsed,
+          isReady: true
+        }));
+      } catch (e) {
+        console.error("Chyba při načítání savu:", e);
         setGameState(prev => ({ ...prev, isReady: true }));
       }
-    }, 0);
+    } else {
+      setGameState(prev => ({ ...prev, isReady: true }));
+    }
   }, []);
 
-  // 2. Uložení dat při každé změně
+  // 2. Uložení dat při každé změně (jen důležité části)
   useEffect(() => {
     if (gameState.isReady) {
-      localStorage.setItem('polda_save', JSON.stringify(gameState));
+      const stateToSave = {
+        currentScene: gameState.currentScene,
+        inventory: gameState.inventory,
+        flags: gameState.flags,
+        clickCounts: gameState.clickCounts
+      };
+      localStorage.setItem('polda_save', JSON.stringify(stateToSave));
     }
-  }, [gameState]);
+  }, [gameState.currentScene, gameState.inventory, gameState.flags, gameState.clickCounts, gameState.isReady]);
 
   // Pomocné funkce pro úpravu stavu
   const updateScene = (sceneId) => {
-    setGameState(prev => ({ ...prev, currentScene: sceneId }));
+    setGameState(prev => {
+      if (prev.currentScene === sceneId) return prev;
+      return { ...prev, currentScene: sceneId };
+    });
   };
 
   const setFlag = (key, value) => {
@@ -93,6 +101,7 @@ export function GameProvider({ children }) {
   };
 
   const resetGame = () => {
+    localStorage.removeItem('polda_save');
     const newState = {
       currentScene: 'scena1',
       inventory: [],
@@ -103,7 +112,6 @@ export function GameProvider({ children }) {
       isReady: true
     };
     setGameState(newState);
-    localStorage.removeItem('polda_save');
   };
 
   return (

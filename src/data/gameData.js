@@ -19,7 +19,7 @@ export const SCENES = {
 
   scena1: {
     id: 'scena1',
-    background: '/scenes/scena1.png',   // ← cesta k PNG v /public/scenes/
+    background: '/scenes/scena1_fhd.png',   // ← cesta k PNG v /public/scenes/
     hotspots: [
       {
         id: 'predmet1',
@@ -40,19 +40,17 @@ export const SCENES = {
       {
         id: 'skrinka',
         label: 'Plechová skříňka',
-        x: 43.5,
-        y: 36.5,
-        w: 13,
+        x: 48,
+        y: 37,
+        w: 12,
         h: 35,
         hoverText: 'Stará plechová skříňka.',
         onClick: [
           {
-            // PRVNÍ KLIKNUTÍ
             condition: (s) => (s.clickCounts?.['scena1_skrinka'] || 0) === 0,
             action: { type: 'SHOW_TEXT', text: 'Plechová skříňka. Drží pohromadě jen silou vůle a nánosem špíny. Na boku je fixou napsáno "Nedotýkat se, kouše".' },
           },
           {
-            // TŘETÍ KLIKNUTÍ (count je 2)
             condition: (s) => (s.clickCounts?.['scena1_skrinka'] || 0) === 2,
             action: [
               { type: 'SHOW_TEXT', text: 'Cvak. No sláva. Vevnitř je jen hromada starých hlášení o narušení prostoru a... moment, co je tohle?' },
@@ -60,7 +58,6 @@ export const SCENES = {
             ],
           },
           {
-            // OSTATNÍ KLIKNUTÍ (fallback)
             condition: (s) => true,
             action: { type: 'SHOW_TEXT', text: 'Plechová skříňka. Drží pohromadě jen silou vůle a nánosem špíny. Na boku je fixou napsáno "Nedotýkat se, kouše".' },
           }
@@ -94,7 +91,7 @@ export const SCENES = {
       {
         id: 'lahev',
         label: 'Lahev',
-        x: 51.5, y: 27, w: 2.5, h: 10,
+        x: 55.7, y: 27, w: 2.5, h: 10,
         hoverText: 'Lahev piva',
         onClick: [
           {
@@ -108,12 +105,12 @@ export const SCENES = {
 
   scena2: {
     id: 'scena2',
-    background: '/scenes/scena2.png',
+    background: '/scenes/scena2_fhd.png',
     hotspots: [
       {
         id: 'kos',
         label: 'Koš',
-        x: 9, y: 65, w: 15, h: 14,
+        x: 18, y: 65, w: 14, h: 16,
         hoverText: 'Odpadkový koš',
         onClick: [
           {
@@ -137,7 +134,7 @@ export const SCENES = {
       {
         id: 'svitici_okno',
         label: 'Svitící okno',
-        x: 51.5, y: 5, w: 12, h: 12,
+        x: 55.5, y: 5, w: 12, h: 12,
         hoverText: 'Svitící okno',
         onClick: [
           {
@@ -150,7 +147,7 @@ export const SCENES = {
       {
         id: 'rozbite_okno',
         label: 'Rozbité okno',
-        x: 51.5, y: 28, w: 12, h: 12,
+        x: 55.5, y: 28, w: 12, h: 12,
         hoverText: 'Rozbité okno',
         onClick: [
           {
@@ -170,7 +167,7 @@ export const SCENES = {
       {
         id: 'matrace',
         label: 'Matrace',
-        x: 48, y: 52, w: 16, h: 15,
+        x: 52, y: 52, w: 16, h: 15,
         hoverText: 'Stará matrace',
         onClick: [
           {
@@ -198,7 +195,7 @@ export const SCENES = {
       {
         id: 'tyc',
         label: 'tyc',
-        x: 39, y: 17, w: 3, h: 50,
+        x: 45.2, y: 17, w: 3, h: 50,
         hoverText: 'Lampa',
         onClick: [
           {
@@ -226,8 +223,8 @@ export const SCENES = {
       {
         id: 'dvere',
         label: 'Zamčené dveře',
-        x: 72, y: 37, w: 18, h: 27,
-        hoverText: 'Zamčené dveře',
+        x: 75, y: 37, w: 18, h: 27,
+        hoverText: 'Dveře s nápisem',
         onClick: [
           {
             condition: (s) => true,
@@ -240,15 +237,15 @@ export const SCENES = {
 
   scena3: {
     id: 'scena3',
-    background: '/scenes/scena3.png',
+    background: '/scenes/scena3_fhd.png',
     hotspots: [
       {
         id: 'nahoru',
         label: 'nahoru',
-        x: 1,
-        y: -20,
+        x: 5,
+        y: 0,
         w: 30,
-        h: 100,
+        h: 85,
         hoverText: 'Jít nahoru',
         onClick: [
           {
@@ -265,7 +262,7 @@ export const SCENES = {
       {
         id: 'dolu',
         label: 'dolu',
-        x: 75, y: -10, w: 30, h: 100,
+        x: 74, y: 0, w: 26, h: 90,
         hoverText: 'Jít dolů',
         onClick: [
           {
@@ -285,7 +282,7 @@ export const SCENES = {
       {
         id: 'elektricka_skrinka',
         label: 'Skříňka s elektrikou',
-        x: 65, y: 33, w: 8, h: 20,
+        x: 63.3, y: 33, w: 8, h: 20,
         hoverText: 'Skříňka s elektrikou',
         onClick: [
           {
@@ -301,7 +298,7 @@ export const SCENES = {
       {
         id: 'svitilna',
         label: 'Svítilna',
-        x: 53, y: 73, w: 3, h: 5,
+        x: 52, y: 73, w: 2.5, h: 5,
         hoverText: 'Svítilna',
         onClick: [
           {
@@ -322,7 +319,6 @@ export const SCENES = {
     ],
   },
 
-  // POPUP SCÉNA — DETAIL SKŘÍŇKY
   popup_skrinka: {
     id: 'popup_skrinka',
     background: '/scenes/popup1.png',
@@ -347,12 +343,12 @@ export const SCENES = {
 
   scena4: {
     id: 'scena4',
-    background: '/scenes/scena4.png',
+    background: '/scenes/scena4_fhd.png',
     hotspots: [
       {
         id: 'gumaky',
         label: 'Gumáky',
-        x: 49, y: 60, w: 8, h: 12,
+        x: 43.3, y: 59.2, w: 8, h: 12,
         hoverText: 'Gumáky',
         onClick: [
           {
@@ -367,7 +363,7 @@ export const SCENES = {
       {
         id: 'nastroje',
         label: 'Nástroje',
-        x: 20, y: 65, w: 20, h: 35,
+        x: 17, y: 65, w: 20, h: 35,
         hoverText: 'Krabice s nářadím',
         onClick: [
           {
@@ -383,7 +379,7 @@ export const SCENES = {
       {
         id: 'dvere',
         label: 'Dveře',
-        x: 60, y: 15, w: 12, h: 55,
+        x: 53, y: 15, w: 10, h: 50,
         hoverText: 'Dveře',
         onClick: [
           {
@@ -405,7 +401,7 @@ export const SCENES = {
       {
         id: 'klice',
         label: 'Krabice klíčů',
-        x: 70, y: 65, w: 10, h: 10,
+        x: 61.5, y: 65, w: 10, h: 8,
         hoverText: 'Krabice klíčů',
         onClick: [
           {
@@ -421,7 +417,7 @@ export const SCENES = {
       {
         id: 'oblek',
         label: 'Protiradiační oblek',
-        x: 75, y: 15, w: 15, h: 45,
+        x: 66, y: 15, w: 12, h: 45,
         hoverText: 'Oblek',
         onClick: [
           {
@@ -447,15 +443,15 @@ export const SCENES = {
 
   scena5: {
     id: 'scena5',
-    background: '/scenes/scena5.png',
+    background: '/scenes/scena5_fhd.png',
     hotspots: [
       {
         id: 'nahoru',
         label: 'nahoru',
-        x: 1,
-        y: -20,
+        x: 5,
+        y: 0,
         w: 30,
-        h: 100,
+        h: 85,
         hoverText: 'Jít nahoru',
         onClick: [
           {
@@ -472,11 +468,10 @@ export const SCENES = {
       {
         id: 'dolu',
         label: 'dolu',
-        x: 75, y: -10, w: 30, h: 100,
+        x: 74, y: 0, w: 26, h: 90,
         hoverText: 'Jít dolů',
         onClick: [
           {
-            // FALLBACK — nemá světlo
             condition: (s) => true,
             action: { type: 'SHOW_TEXT', text: 'Všechno, co potřebuju, už z tam mám.' }
           }
@@ -486,7 +481,7 @@ export const SCENES = {
       {
         id: 'elektricka_skrinka',
         label: 'Skříňka s elektrikou',
-        x: 65, y: 33, w: 8, h: 20,
+        x: 63.3, y: 33, w: 8, h: 20,
         hoverText: 'Skříňka s elektrikou',
         onClick: [
           {
@@ -498,7 +493,7 @@ export const SCENES = {
       {
         id: 'svitilna',
         label: 'Svítilna',
-        x: 53, y: 73, w: 3, h: 5,
+        x: 52, y: 73, w: 2.5, h: 5,
         hoverText: 'Svítilna',
         onClick: [
           {
@@ -515,12 +510,12 @@ export const SCENES = {
 
   scena6: {
     id: 'scena6',
-    background: '/scenes/scena6.png',
+    background: '/scenes/scena6_fhd.png',
     hotspots: [
       {
         id: 'rozpadle_schodiste',
         label: 'rozpadle_schodiste',
-        x: 40,
+        x: 45,
         y: 30,
         w: 20,
         h: 50,
@@ -536,7 +531,7 @@ export const SCENES = {
       {
         id: 'vytah',
         label: 'vytah',
-        x: 70, y: 20, w: 20, h: 70,
+        x: 73, y: 20, w: 20, h: 70,
         hoverText: 'Výtah',
         onClick: [
           {
@@ -553,7 +548,7 @@ export const SCENES = {
 
   scena7: {
     id: 'scena7',
-    background: '/scenes/scena7.png',
+    background: '/scenes/scena7_fhd.png',
     onEnter: [
       {
         condition: (s) => !s.flags.scena7_intro_hotovo,
@@ -570,7 +565,7 @@ export const SCENES = {
       {
         id: 'dira_ve_strope',
         label: 'dira_ve_strope',
-        x: 23,
+        x: 28,
         y: 5,
         w: 15,
         h: 12,
@@ -579,7 +574,7 @@ export const SCENES = {
           {
             condition: (s) => true,
             action: [
-              { type: 'SHOW_TEXT', text: 'Zatraceně, ta díra ve stropě vypadá, že by se tam dalo projít...', delay: 2000 },
+              { type: 'SHOW_TEXT', text: 'Zatraceně, ta díra ve stropě vypadá, že by se tam dalo projít...' },
               { type: 'CHANGE_SCENE', sceneId: 'scena8' }
             ]
           }
@@ -590,7 +585,7 @@ export const SCENES = {
 
   scena8: {
     id: 'scena8',
-    background: '/scenes/scena8.png',
+    background: '/scenes/scena8_fhd.png',
     hotspots: [
       {
         id: 'lezt_nahoru',
@@ -616,7 +611,7 @@ export const SCENES = {
       {
         id: 'nozik',
         label: 'Kapesní nožík',
-        x: 71, y: 48, w: 3, h: 10,
+        x: 71, y: 48.5, w: 3, h: 10,
         hoverText: 'Kapesní nožík',
         onClick: [
           {
@@ -633,12 +628,12 @@ export const SCENES = {
 
   scena9: {
     id: 'scena9',
-    background: '/scenes/scena9.png',
+    background: '/scenes/scena9_fhd.png',
     hotspots: [
       {
         id: 'kodovy_zamek',
         label: 'Kódový zámek',
-        x: 8, y: 48, w: 4, h: 13,
+        x: 20, y: 48, w: 4, h: 15,
         hoverText: 'Kódový zámek',
         onClick: [
           {
@@ -657,7 +652,7 @@ export const SCENES = {
       {
         id: 'noviny',
         label: 'Noviny',
-        x: 46,
+        x: 54,
         y: 62,
         w: 6,
         h: 7,
@@ -669,6 +664,19 @@ export const SCENES = {
               { type: 'SHOW_TEXT', text: 'Dotazník: Kolik písmen měla barva skříňky, skříňky, skříňky. Počkat, že by to byla nějaká hádanka.....' },
               { type: 'OPEN_POPUP', popupId: 'popup_noviny' }
             ]
+          }
+        ]
+      },
+
+      {
+        id: 'tekutina',
+        label: 'Tekutina',
+        x: 32, y: 67, w: 15, h: 11,
+        hoverText: 'Rozteklá tekutina',
+        onClick: [
+          {
+            condition: (s) => true,
+            action: { type: 'SHOW_TEXT', text: 'Něco je rozlitý na zemi. Podle toho, jak to rozežírá tu podlahovou krytinu, to asi nebude jenom vylitý kafe noční směny. Radši to obejdu velkým obloukem.' },
           }
         ]
       }
@@ -701,17 +709,386 @@ export const SCENES = {
 
   scena10: {
     id: 'scena10',
-    background: '/scenes/scena10.png',
+    background: '/scenes/scena10_fhd.png',
     hotspots: [
       {
-        id: 'konec',
-        label: 'Konec',
-        x: 40, y: 40, w: 20, h: 20,
-        hoverText: 'Pokračování příště...',
-        onClick: [{ condition: (s) => true, action: { type: 'SHOW_TEXT', text: 'Gratuluji! Právě jsi dokončil tuto část hry. Pokračování příště...' } }]
+        id: 'noc',
+        label: 'Noc',
+        x: 39.5,
+        y: 15,
+        w: 27,
+        h: 35,
+        hoverText: 'Měsíc',
+        onClick: [
+          {
+            condition: (s) => true,
+            action:
+              [
+                { type: 'SHOW_TEXT', text: 'To už bude půlnoc? No, čekal jsem, že mně to tolik času nezabere.' }
+              ]
+          }
+        ]
+      },
+      {
+        id: 'gauc',
+        label: 'Starý gauč',
+        x: 10,
+        y: 50,
+        w: 33,
+        h: 40,
+        hoverText: 'Rozpadlý gauč',
+        onClick: [
+          {
+            condition: (s) => true,
+            action:
+              [
+                { type: 'SHOW_TEXT', text: '„Ta pohovka už má nejlepší léta dávno za sebou. Je prožraná až na péra, jako by si na ní někdo brousil zuby. Sedat si na ni nebudu, ještě by mě sežrala zaživa i s botama.' }
+              ]
+          }
+        ]
+      },
+
+      {
+        id: 'papir',
+        label: 'Recyklovaný papír',
+        x: 50,
+        y: 79,
+        w: 14,
+        h: 17,
+        hoverText: 'Recyklovaný papír',
+        onClick: [
+          {
+            condition: (s) => true,
+            action:
+              [
+                { type: 'OPEN_POPUP', popupId: 'popup_papir' }
+              ]
+          }
+        ]
+      },
+
+      {
+        id: 'do_kuchyne',
+        label: 'Do kuchyně',
+        x: 0,
+        y: 0,
+        w: 16,
+        h: 100,
+        hoverText: 'Projít dál',
+        onClick: [
+          {
+            condition: (s) => true,
+            action: { type: 'CHANGE_SCENE', sceneId: 'scena11' }
+          }
+        ]
       }
     ]
   },
+
+  popup_papir: {
+    id: 'popup_papir',
+    background: '/scenes/popup4.png',
+    hotspots: []
+  },
+
+  scena11: {
+    id: 'scena11',
+    background: '/scenes/scena11_fhd.png',
+    onEnter: [
+      {
+        condition: (s) => !s.flags.scena11_intro_hotovo,
+        action: [
+          { type: 'SET_FLAG', key: 'scena11_intro_hotovo', value: true },
+          { type: 'SHOW_TEXT', text: '„No nazdar, tohle není kuchyň, to je biologická zbraň v rozkladu, ze který by se osypal i vrahoun na útěku.“' }
+        ]
+      }
+    ],
+    hotspots: [
+      {
+        id: 'kuchyne',
+        label: 'Kuchyně',
+        x: 0,
+        y: 0,
+        w: 40,
+        h: 100,
+        hoverText: 'Kuchyňská linka',
+        onClick: [
+          {
+            condition: (s) => true,
+            action: { type: 'SHOW_TEXT', text: 'V kuchyni nic nepotřebuju, ledaže by tady na mě číhal vrah a já se potřeboval bránit, tak si vypůjčím nějakou polorozpadlou vařečku.' }
+          }
+        ]
+      },
+      {
+        id: 'zahadna_skrinka',
+        label: 'Záhadná skříňka',
+        x: 72,
+        y: 25,
+        w: 14,
+        h: 60,
+        hoverText: 'Záhadná skříňka',
+        onClick: [
+          {
+            condition: (s) => true,
+            action: { type: 'SHOW_TEXT', text: 'To vypadá jako to, co hledám. Starej vypínač, ale zamklej...' }
+          }
+        ]
+      },
+      {
+        id: 'pletivo',
+        label: 'Pletivo',
+        x: 85,
+        y: 22,
+        w: 10,
+        h: 65,
+        hoverText: 'Pletivo',
+        condition: (s) => (s.clickCounts?.['scena11_zahadna_skrinka'] || 0) > 0,
+        onClick: [
+          {
+            condition: (s) => true,
+            action: [
+              { type: 'OPEN_POPUP', popupId: 'popup_vypinac' },
+              { type: 'SHOW_TEXT', text: 'Jsem rád, že se mi ti štípačky po otevření brány nerozpadly a že je ještě teď můžu použít.', delay: 500 },
+              { type: 'SHOW_TEXT', text: 'Hm, to bude zas něco na mozek. Jsou tu nějaké pojistky, drátky a něco, co se tváří, jako tlakoměr.', delay: 4500 }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+  popup_vypinac: {
+    id: 'popup_vypinac',
+    background: '/scenes/popup5.png',
+    hotspots: [
+      {
+        id: 'pojistka1',
+        label: 'Pojistka 1',
+        x: 46, y: 30, w: 5, h: 18,
+        hoverText: 'Pojistka 1',
+        onClick: [
+          {
+            condition: (s) => (s.clickCounts?.['popup_vypinac_pojistka1'] || 0) === 0,
+            action: { type: 'SHOW_TEXT', text: 'Nad pojistkami jsou vruty, můžu je vyšroubovat nebo zašroubovat zpět.' }
+          },
+          {
+            condition: (s) => !s.flags.pojistka1_out && s.flags.pojistka2_out && s.flags.zeleny_dratek_cut,
+            action: [
+              { type: 'SET_FLAG', key: 'pojistka1_out', value: true },
+              { type: 'SHOW_TEXT', text: 'Pojistka 1 je vyřazená. Něco se děje!' }
+            ]
+          },
+          {
+            condition: (s) => !s.flags.pojistka1_out,
+            action: [
+              { type: 'SET_FLAG', key: 'pojistka1_out', value: true },
+              { type: 'SHOW_TEXT', text: 'Pojistka 1 je vyřazená. Zatím se nic nestalo, nevím, jestli je to dobře nebo špatně.' }
+            ]
+          },
+          {
+            condition: (s) => s.flags.pojistka1_out,
+            action: [
+              { type: 'SET_FLAG', key: 'pojistka1_out', value: false },
+              { type: 'SHOW_TEXT', text: 'Pojistku 1 jsem zašrouboval zpět. Zatím se nic nestalo, nevím, jestli je to dobře nebo špatně.' }
+            ]
+          }
+        ]
+      },
+      {
+        id: 'pojistka2',
+        label: 'Pojistka 2',
+        x: 53, y: 30, w: 5, h: 18,
+        hoverText: 'Pojistka 2',
+        onClick: [
+          {
+            condition: (s) => (s.clickCounts?.['popup_vypinac_pojistka2'] || 0) === 0,
+            action: { type: 'SHOW_TEXT', text: 'Tady ten vrut vypadá, že jde taky povolit. Vyšroubovat?' }
+          },
+          {
+            condition: (s) => !s.flags.pojistka2_out && s.flags.zeleny_dratek_cut,
+            action: [
+              { type: 'SET_FLAG', key: 'pojistka2_out', value: true },
+              { type: 'SET_FLAG', key: 'trigger_glitch', value: true },
+              { type: 'SHOW_TEXT', text: 'Pojistka 2 je vyřazená. Něco se děje!' },
+              { type: 'CHANGE_SCENE', sceneId: 'scena12', delay: 2000 }
+            ]
+          },
+          {
+            condition: (s) => !s.flags.pojistka2_out,
+            action: [
+              { type: 'SET_FLAG', key: 'pojistka2_out', value: true },
+              { type: 'SHOW_TEXT', text: 'Pojistka 2 je vyřazená. Zatím se nic nestalo, nevím, jestli je to dobře nebo špatně.' }
+            ]
+          },
+          {
+            condition: (s) => s.flags.pojistka2_out,
+            action: [
+              { type: 'SET_FLAG', key: 'pojistka2_out', value: false },
+              { type: 'SHOW_TEXT', text: 'Pojistku 2 jsem zašrouboval zpět. Zatím se nic nestalo, nevím, jestli je to dobře nebo špatně.' }
+            ]
+          }
+        ]
+      },
+      {
+        id: 'pojistka3',
+        label: 'Pojistka 3',
+        x: 61, y: 30, w: 5, h: 18,
+        hoverText: 'Pojistka 3',
+        onClick: [
+          {
+            condition: (s) => (s.clickCounts?.['popup_vypinac_pojistka3'] || 0) === 0,
+            action: { type: 'SHOW_TEXT', text: 'Zkusím i tuhle pojistku vyšroubovat...' }
+          },
+          {
+            condition: (s) => !s.flags.pojistka3_out && s.flags.pojistka2_out && s.flags.zeleny_dratek_cut,
+            action: [
+              { type: 'SET_FLAG', key: 'pojistka3_out', value: true },
+              { type: 'SHOW_TEXT', text: 'Pojistka 3 je vyřazená. Něco se děje!' }
+            ]
+          },
+          {
+            condition: (s) => !s.flags.pojistka3_out,
+            action: [
+              { type: 'SET_FLAG', key: 'pojistka3_out', value: true },
+              { type: 'SHOW_TEXT', text: 'Pojistka 3 je vyřazená. Zatím se nic nestalo, nevím, jestli je to dobře nebo špatně.' }
+            ]
+          },
+          {
+            condition: (s) => s.flags.pojistka3_out,
+            action: [
+              { type: 'SET_FLAG', key: 'pojistka3_out', value: false },
+              { type: 'SHOW_TEXT', text: 'Pojistku 3 jsem zašrouboval zpět. Zatím se nic nestalo, nevím, jestli je to dobře nebo špatně.' }
+            ]
+          }
+        ]
+      },
+      {
+        id: 'zeleny_dratek',
+        label: 'Zelený drátek',
+        x: 42, y: 50, w: 7, h: 20,
+        hoverText: 'Zelený drátek',
+        onClick: [
+          {
+            condition: (s) => (s.clickCounts?.['popup_vypinac_zeleny_dratek'] || 0) === 0,
+            action: { type: 'SHOW_TEXT', text: 'Zelený drát. Můžu ho přestřihnout nebo zase spojit k sobě.' }
+          },
+          {
+            condition: (s) => !s.flags.zeleny_dratek_cut && s.flags.pojistka2_out,
+            action: [
+              { type: 'SET_FLAG', key: 'zeleny_dratek_cut', value: true },
+              { type: 'SET_FLAG', key: 'trigger_glitch', value: true },
+              { type: 'SHOW_TEXT', text: 'Zelený drátek jsem přestřihl. Něco se děje!' },
+              { type: 'CHANGE_SCENE', sceneId: 'scena12', delay: 2000 }
+            ]
+          },
+          {
+            condition: (s) => !s.flags.zeleny_dratek_cut,
+            action: [
+              { type: 'SET_FLAG', key: 'zeleny_dratek_cut', value: true },
+              { type: 'SHOW_TEXT', text: 'Zelený drátek jsem přestřihl. Zatím se nic nestalo, nevím, jestli je to dobře nebo špatně.' }
+            ]
+          },
+          {
+            condition: (s) => s.flags.zeleny_dratek_cut,
+            action: [
+              { type: 'SET_FLAG', key: 'zeleny_dratek_cut', value: false },
+              { type: 'SHOW_TEXT', text: 'Zelený drátek jsem spojil zpět. Zatím se nic nestalo, nevím, jestli je to dobře nebo špatně.' }
+            ]
+          }
+        ]
+      },
+      {
+        id: 'zluty_dratek',
+        label: 'Žlutý drátek',
+        x: 50, y: 50, w: 7, h: 20,
+        hoverText: 'Žlutý drátek',
+        onClick: [
+          {
+            condition: (s) => (s.clickCounts?.['popup_vypinac_zluty_dratek'] || 0) === 0,
+            action: { type: 'SHOW_TEXT', text: 'Žlutý drát. Tenhle můžu taky zkusit přestřihnout.' }
+          },
+          {
+            condition: (s) => !s.flags.zluty_dratek_cut && s.flags.pojistka2_out && s.flags.zeleny_dratek_cut,
+            action: [
+              { type: 'SET_FLAG', key: 'zluty_dratek_cut', value: true },
+              { type: 'SHOW_TEXT', text: 'Žlutý drátek jsem přestřihl. Něco se děje!' }
+            ]
+          },
+          {
+            condition: (s) => !s.flags.zluty_dratek_cut,
+            action: [
+              { type: 'SET_FLAG', key: 'zluty_dratek_cut', value: true },
+              { type: 'SHOW_TEXT', text: 'Žlutý drátek jsem přestřihl. Zatím se nic nestalo, nevím, jestli je to dobře nebo špatně.' }
+            ]
+          },
+          {
+            condition: (s) => s.flags.zluty_dratek_cut,
+            action: [
+              { type: 'SET_FLAG', key: 'zluty_dratek_cut', value: false },
+              { type: 'SHOW_TEXT', text: 'Žlutý drátek jsem spojil zpět. Zatím se nic nestalo, nevím, jestli je to dobře nebo špatně.' }
+            ]
+          }
+        ]
+      },
+      {
+        id: 'cerveny_dratek',
+        label: 'Červený drátek',
+        x: 58, y: 50, w: 7, h: 20,
+        hoverText: 'Červený drátek',
+        onClick: [
+          {
+            condition: (s) => (s.clickCounts?.['popup_vypinac_cerveny_dratek'] || 0) === 0,
+            action: { type: 'SHOW_TEXT', text: 'Červený drát. Tenhle vypadá důležitě. Přestřihnout?' }
+          },
+          {
+            condition: (s) => !s.flags.cerveny_dratek_cut && s.flags.pojistka2_out && s.flags.zeleny_dratek_cut,
+            action: [
+              { type: 'SET_FLAG', key: 'cerveny_dratek_cut', value: true },
+              { type: 'SHOW_TEXT', text: 'Červený drátek jsem přestřihl. Něco se děje!' }
+            ]
+          },
+          {
+            condition: (s) => !s.flags.cerveny_dratek_cut,
+            action: [
+              { type: 'SET_FLAG', key: 'cerveny_dratek_cut', value: true },
+              { type: 'SHOW_TEXT', text: 'Červený drátek jsem přestřihl. Zatím se nic nestalo, nevím, jestli je to dobře nebo špatně.' }
+            ]
+          },
+          {
+            condition: (s) => s.flags.cerveny_dratek_cut,
+            action: [
+              { type: 'SET_FLAG', key: 'cerveny_dratek_cut', value: false },
+              { type: 'SHOW_TEXT', text: 'Červený drátek jsem spojil zpět. Zatím se nic nestalo, nevím, jestli je to dobře nebo špatně.' }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  scena12: {
+    id: 'scena12',
+    background: '/scenes/scena12_fhd.png',
+    onEnter: [
+      { type: 'CLOSE_POPUP' },
+      { type: 'SET_FLAG', key: 'trigger_glitch', value: false },
+      { type: 'SET_FLAG', key: 'trigger_blackout', value: false },
+      {
+        type: 'SHOW_TEXT',
+        text: 'Někdo sem přijíždí, vystupuje z auta. Počkat počkat. Vždyť to jsem já, znamená to tedy, že se mi to nepovedlo nebo je všechno, jak má být.....'
+      },
+      // Po 10 vteřinách čistá zatmívačka
+      { type: 'SET_FLAG', key: 'trigger_blackout', value: true, delay: 10000 },
+      // Po 11 vteřinách se ukážou vycentrované titulky
+      {
+        type: 'SHOW_CREDITS',
+        text: 'Díky za zahrání!',
+        delay: 11000
+      },
+      // Po 17 vteřinách návrat do menu
+      { type: 'GO_TO_LOBBY', delay: 17000 }
+    ],
+    hotspots: []
+  }
 };
 
 
@@ -749,7 +1126,7 @@ export const ITEMS = {
   },
   baterky: {
     id: 'baterky',
-    name: 'Batalerie',
+    name: 'Baterie',
     image: '/items/baterky.png',
     description: 'Nové alkalické baterie.'
   },

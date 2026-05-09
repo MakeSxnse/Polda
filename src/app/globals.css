@@ -9,4 +9,148 @@ body {
 /* Obrys textu — přidej className="text-outlined" */
 .text-outlined {
   -webkit-text-stroke: 3.5px black;
+  --foreground: #ffffff;
+  --background: #000000;
+}
+
+@keyframes shake {
+  0% {
+    transform: translate(1px, 1px) rotate(0deg);
+  }
+
+  10% {
+    transform: translate(-1px, -2px) rotate(-1deg);
+  }
+
+  20% {
+    transform: translate(-3px, 0px) rotate(1deg);
+  }
+
+  30% {
+    transform: translate(3px, 2px) rotate(0deg);
+  }
+
+  40% {
+    transform: translate(1px, -1px) rotate(1deg);
+  }
+
+  50% {
+    transform: translate(-1px, 2px) rotate(-1deg);
+  }
+
+  60% {
+    transform: translate(-3px, 1px) rotate(0deg);
+  }
+
+  70% {
+    transform: translate(3px, 1px) rotate(-1deg);
+  }
+
+  80% {
+    transform: translate(-1px, -1px) rotate(1deg);
+  }
+
+  90% {
+    transform: translate(1px, 2px) rotate(0deg);
+  }
+
+  100% {
+    transform: translate(1px, -2px) rotate(-1deg);
+  }
+}
+
+@keyframes glitch {
+  0% {
+    clip-path: inset(40% 0 61% 0);
+    transform: translate(-20px, -10px);
+  }
+
+  20% {
+    clip-path: inset(92% 0 1% 0);
+    transform: translate(20px, 10px);
+  }
+
+  40% {
+    clip-path: inset(43% 0 1% 0);
+    transform: translate(-20px, -10px);
+  }
+
+  60% {
+    clip-path: inset(25% 0 58% 0);
+    transform: translate(20px, 10px);
+  }
+
+  80% {
+    clip-path: inset(54% 0 7% 0);
+    transform: translate(-20px, -10px);
+  }
+
+  100% {
+    clip-path: inset(58% 0 43% 0);
+    transform: translate(20px, 10px);
+  }
+}
+
+.animate-shake {
+  animation: shake 0.2s infinite;
+}
+
+.animate-glitch {
+  position: relative;
+  animation: glitch 0.1s infinite;
+  filter: hue-rotate(90deg) brightness(1.5);
+}
+
+.blackout-overlay {
+  background: black;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out;
+}
+
+.blackout-overlay.active {
+  opacity: 1;
+}
+
+.credits-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  color: white;
+  text-align: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 2s ease-in-out;
+}
+
+.credits-overlay.active {
+  opacity: 1;
+}
+
+.credits-title {
+  font-size: 8rem;
+  font-weight: bold;
+  letter-spacing: 0.5em;
+  margin-bottom: 2rem;
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+}
+
+.credits-text {
+  font-size: 2rem;
+  opacity: 0.8;
+  letter-spacing: 0.2em;
+}
+
+/* Skrytí výchozího kurzoru — vlastní kurzor řeší CustomCursor komponenta */
+*,
+*::before,
+*::after {
+  cursor: none !important;
 }
