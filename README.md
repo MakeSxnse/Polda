@@ -17,3 +17,5 @@
 <h4>Co jsem dnes udělal:</h4>
 <p> - dodělal progres hry po scénu 9</p>
 <p> - opravil bugy</p>
+
+<p>polocasrozpadu.vercel.app</p>
