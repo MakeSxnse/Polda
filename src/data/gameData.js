@@ -151,11 +151,15 @@ export const SCENES = {
         hoverText: 'Rozbité okno',
         onClick: [
           {
-            condition: (s) => s.inventory.includes('tyc'),
+            condition: (s) => s.inventory.includes('tyc') && s.inventory.includes('paklic'),
             action: [
               { type: 'SHOW_TEXT', text: 'Tyč jako žebřík. Starý trik. A moje záda mi to nikdy neodpustí.' },
               { type: 'CHANGE_SCENE', sceneId: 'scena3' }
             ]
+          },
+          {
+            condition: (s) => !s.inventory.includes('tyc') || !s.inventory.includes('paklic'),
+            action: { type: 'SHOW_TEXT', text: 'Ještě jsem nesebral všechno. Cítím, že mi tu ještě něco chybí, než se pokusím vylézt nahoru.' },
           },
           {
             condition: (s) => true,
@@ -171,23 +175,23 @@ export const SCENES = {
         hoverText: 'Stará matrace',
         onClick: [
           {
-            condition: (s) => s.inventory.includes('tyc'),
+            condition: (s) => s.inventory.includes('tyc') && s.inventory.includes('paklic'),
             action: [
               { type: 'SHOW_TEXT', text: 'Šprajcnout, podepřít a... tradá! Teď je to stabilní jako státní rozpočet těsně před volbama. Vypadá to sice blbě, ale svoji funkci to splní.' },
               { type: 'CHANGE_SCENE', sceneId: 'scena3' }
             ],
           },
           {
-            condition: (s) => (s.clickCounts?.['scena2_matrace'] || 0) === 0,
-            action: { type: 'SHOW_TEXT', text: 'Fuj tajbl, ta už něco pamatuje. Je smradlavá, flekatá a těžká jako hříchy mýho mládí. Ale na spaní ji nechci, to je jasný.' },
+            condition: (s) => s.inventory.includes('tyc') && !s.inventory.includes('paklic'),
+            action: { type: 'SHOW_TEXT', text: 'Mám tyč na podepření, ale pořád mi něco chybí. Ještě jsem tu nesebral všechno.' },
           },
           {
-            condition: (s) => (s.clickCounts?.['scena2_matrace'] || 0) === 1,
-            action: { type: 'SHOW_TEXT', text: 'Nejsem sebevrah. Na tohle stoupnout, tak se prohnu až k zemi a vyrazím si dech. To chce nějakou vzpěru.' },
+            condition: (s) => !s.inventory.includes('tyc') && s.inventory.includes('paklic'),
+            action: { type: 'SHOW_TEXT', text: 'Nejsem sebevrah. Na tohle stoupnout bez vzpěry, tak se prohnu až k zemi. Potřebuju něco pevného, čím to podepřít.' },
           },
           {
             condition: (s) => true,
-            action: { type: 'SHOW_TEXT', text: 'Bez nějaké tyče nebo podpěry s tou matrací nic nevymyslím.' },
+            action: { type: 'SHOW_TEXT', text: 'Fuj tajbl, ta už něco pamatuje. Je smradlavá, flekatá a těžká jako hříchy mýho mládí. Kdybych to podepřel nějakou tyčí, mohl bych se na ni vyšplhat k tomu oknu.' },
           },
         ],
       },
@@ -555,9 +559,9 @@ export const SCENES = {
         action: [
           { type: 'SET_FLAG', key: 'scena7_intro_hotovo', value: true },
           { type: 'SHOW_TEXT', text: 'Nastavil jsem tam čtvrté patro, tak uvidíme, kde mě to vysadí.', delay: 500 },
-          { type: 'SHOW_TEXT', text: 'Jedeme. Vrrr-skřííí. Každý patro doprovází takovej ten zvuk, jako když brousíš nůž o beton. Dva... tři... no tak, ještě kousek...', delay: 4500 },
-          { type: 'SHOW_TEXT', text: 'Kabinou to škublo tak, že mi cvakly zuby o sklo masky. A ticho. To nejhorší ticho na světě. Světlo zhaslo a zbyla jen ta moje bludička na rameni. \'Tak a je to,\' řekl by Pat nebo Mat. Já říkám něco mnohem sprostšího.', delay: 9500 },
-          { type: 'SHOW_TEXT', text: 'Dveře se ani nehnou. Jsou zablokovaný někde mezi patry. Koukám přímo do betonový zdi šachty. Tohle je past na myši a já jsem ta myš. Musím se odsud dostat, než mi v týhle masce dojde trpělivost... nebo kyslík.', delay: 16000 }
+          { type: 'SHOW_TEXT', text: 'Jedeme. Vrrr-skřííí. Každý patro doprovází takovej ten zvuk, jako když brousíš nůž o beton. Dva... tři... no tak, ještě kousek...', delay: 8500 },
+          { type: 'SHOW_TEXT', text: 'Kabinou to škublo tak, že mi cvakly zuby o sklo masky. A ticho. To nejhorší ticho na světě. Světlo zhaslo a zbyla jen ta moje bludička na rameni. \'Tak a je to,\' řekl by Pat nebo Mat. Já říkám něco mnohem sprostšího.', delay: 16500 },
+          { type: 'SHOW_TEXT', text: 'Dveře se ani nehnou. Jsou zablokovaný někde mezi patry. Koukám přímo do betonový zdi šachty. Tohle je past na myši a já jsem ta myš. Musím se odsud dostat, než mi v týhle masce dojde trpělivost... nebo kyslík.', delay: 26000 }
         ]
       }
     ],
@@ -577,6 +581,36 @@ export const SCENES = {
               { type: 'SHOW_TEXT', text: 'Zatraceně, ta díra ve stropě vypadá, že by se tam dalo projít...' },
               { type: 'CHANGE_SCENE', sceneId: 'scena8' }
             ]
+          }
+        ]
+      },
+      {
+        id: 'tlacitka_vytahu',
+        label: 'Tlačítka',
+        x: 81,
+        y: 37,
+        w: 8,
+        h: 30,
+        hoverText: 'Tlačítka',
+        onClick: [
+          {
+            condition: (s) => true,
+            action: { type: 'SHOW_TEXT', text: 'Myslím si, že se nic nestane, když je zmáčknu.' }
+          }
+        ]
+      },
+      {
+        id: 'dvere_vytahu',
+        label: 'Dveře výtahu',
+        x: 35,
+        y: 30,
+        w: 23,
+        h: 50,
+        hoverText: 'Dveře',
+        onClick: [
+          {
+            condition: (s) => true,
+            action: { type: 'SHOW_TEXT', text: 'Dveře jsou zaseknutý. Musím jít jinudy.' }
           }
         ]
       }
@@ -1074,17 +1108,10 @@ export const SCENES = {
       { type: 'SET_FLAG', key: 'trigger_blackout', value: false },
       {
         type: 'SHOW_TEXT',
-        text: 'Někdo sem přijíždí, vystupuje z auta. Počkat počkat. Vždyť to jsem já, znamená to tedy, že se mi to nepovedlo nebo je všechno, jak má být.....'
+        text: 'Někdo sem přijíždí, vystupuje z auta. Počkat počkat. Vždyť to jsem já. Sakra co se děje?!...'
       },
-      // Po 10 vteřinách čistá zatmívačka
       { type: 'SET_FLAG', key: 'trigger_blackout', value: true, delay: 10000 },
-      // Po 11 vteřinách se ukážou vycentrované titulky
-      {
-        type: 'SHOW_CREDITS',
-        text: 'Díky za zahrání!',
-        delay: 11000
-      },
-      // Po 17 vteřinách návrat do menu
+      { type: 'SHOW_CREDITS', text: 'Díky za zahrání!', delay: 11000 },
       { type: 'GO_TO_LOBBY', delay: 17000 }
     ],
     hotspots: []
