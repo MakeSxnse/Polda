@@ -1,5 +1,7 @@
 <h1>VLASTNÍ VERZE HRY POLDA</h1>
 
+<h2>ODKAZ NA HRU: https://zahadasmycky.vercel.app/</h2>
+
 <h3>Použité technologie:</h3>
 <p>Next.js (pro postavení webu)</p>
 <p>Leonardo.ai, Google gemini, Grok.ai (generování pozadí a postav)</p>
@@ -18,4 +20,3 @@
 <p> - dodělal progres hry po scénu 9</p>
 <p> - opravil bugy</p>
 
-<p>polocasrozpadu.vercel.app</p>
