@@ -11,7 +11,7 @@ const denkOne = Denk_One({
 });
 
 export const metadata = {
-  title: "Polda - Poločas rozpadu",
+  title: "Polda - Záhada smyčky",
   description: "",
 };
 
